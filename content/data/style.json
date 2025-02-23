@@ -4,30 +4,35 @@
     "onLight": "#050806",
     "dark": "#000000",
     "onDark": "#FBFFF2",
-    "primary": "#0804F6",
-    "onPrimary": "#FBFFF2",
-    "secondary": "#FE491F",
+    "primary": "#9F5AFF",
+    "onPrimary": "#FFFFFF",
+    "secondary": "#A0FFFF",
     "onSecondary": "#050806",
     "complementary": "#565862",
     "onComplementary": "#FBFFF2",
-    "fontBody": "fontPrimary",
+    "fontBody": "Raleway",
+    "fontHeading": "Orbitron",
+    "textShadow": {
+    "glow": "0px 0px 10px #9F5AFF",
+    "cyan": "0px 0px 8px #A0FFFF"
+    },
     "h1": {
-        "size": "6xl",
-        "weight": "medium",
+        "size": "7xl",
+        "weight": "bold",
         "decoration": "none",
         "case": "uppercase",
-        "letterSpacing": "normal"
+        "letterSpacing": "wide"
     },
     "h2": {
-        "size": "5xl",
-        "weight": "normal",
+        "size": "6xl",
+        "weight": "semibold",
         "decoration": "none",
         "case": "uppercase",
-        "letterSpacing": "normal"
+        "letterSpacing": "wide"
     },
     "h3": {
-        "size": "4xl",
-        "weight": "normal",
+        "size": "5xl",
+        "weight": "medium",
         "decoration": "none",
         "case": "uppercase",
         "letterSpacing": "normal"
