@@ -4,7 +4,11 @@ const nextConfig = {
         stackbitPreview: process.env.STACKBIT_PREVIEW
     },
     trailingSlash: true,
-    reactStrictMode: true
+    reactStrictMode: true,
+    compiler: {
+        styledComponents: true
+    }
 };
 
 module.exports = nextConfig;
+
