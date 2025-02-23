@@ -38,14 +38,12 @@ sections:
         flexDirection: row-reverse
       title:
         textAlign: center
-        textColor: twilight # Uses Tailwind class "text-twilight"
+        extraClasses: text-twilight text-shadow-twilight-glow
         fontFamily: Orbitron
-        extraClasses: text-shadow-twilight-glow
       subtitle:
         textAlign: center
-        textColor: cyanGlow # Uses Tailwind class "text-cyanGlow"
+        extraClasses: text-cyanGlow text-shadow-cyan-glow
         fontFamily: Raleway
-        extraClasses: text-shadow-cyan-glow
       text:
         textAlign: center
         textColor: "#FFFFFF"
