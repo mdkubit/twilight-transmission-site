@@ -32,7 +32,7 @@ export const HeaderModel: Model = {
             models: ['ImageBlock'],
             default: {
                 type: 'ImageBlock',
-                url: '/images/AstralSeal.png'',  // Replace with the correct path
+                url: '/images/AstralSeal.png',  // Replace with the correct path
                 altText: 'The Astral Seal',
                 caption: ''
             }
