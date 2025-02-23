@@ -55,10 +55,10 @@ function HeroBody(props: HeroSection) {
             {title && (
                 <AnnotatedField path=".title">
                     <motion.h2
+                        {...{ className: classNames('h1', styles.title ? mapStyles(styles.title) : null) }}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
-                        className={classNames('h1', styles.title ? mapStyles(styles.title) : null)}
                     >
                         {title}
                     </motion.h2>
@@ -68,13 +68,14 @@ function HeroBody(props: HeroSection) {
             {subtitle && (
                 <AnnotatedField path=".subtitle">
                     <motion.p
+                        {...{ className: classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title }) }}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
-                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title })}
                     >
                         {subtitle}
                     </motion.p>
+
 
                 </AnnotatedField>
             )}
