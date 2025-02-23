@@ -4,7 +4,7 @@ title: Twilight Transmission
 colors: colors-a
 backgroundImage:
   type: BackgroundImage
-  url: /images/bg1.jpg
+  url: /images/TwilightTransmission-MainBG.png
   backgroundSize: cover
   backgroundPosition: center
   backgroundRepeat: no-repeat
