@@ -50,7 +50,7 @@ function HeroBody(props: HeroSection) {
                 <AnnotatedField path=".title">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 1, y: 0, scale: [1, 1.03, 1] }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
                         whileHover={{ scale: 1.05 }}
                         {...(classNames('h1', styles.title ? mapStyles(styles.title) : null) && { className: classNames('h1', styles.title ? mapStyles(styles.title) : null) })}
