@@ -31,10 +31,6 @@ module.exports = {
                 complementary: themeStyle.complementary,
                 'on-complementary': themeStyle.onComplementary    
             },
-            textShadow: {
-                'twilight-glow': '0px 0px 10px #9F5AFF',
-                'cyan-glow': '0px 0px 8px #A0FFFF',
-            },
             spacing: {
                 '1/1': '100%',
                 '1/4': '25%',
@@ -56,13 +52,14 @@ module.exports = {
         }
     },
     plugins: [
-        plugin(function ({ addBase, addComponents, theme }) {
+        plugin(function ({ addBase, addComponents, addUtilities, theme }) {
             const h1Size = themeStyle.h1.size;
             const adjustH1Size = ['6xl', '7xl', '8xl', '9xl'].includes(h1Size);
             const h2Size = themeStyle.h2.size;
             const adjustH2Size = ['5xl', '6xl', '7xl', '8xl', '9xl'].includes(h2Size);
             const h3Size = themeStyle.h3.size;
             const adjustH3Size = ['4xl', '5xl', '6xl', '7xl', '8xl', '9xl'].includes(h3Size);
+
             addBase({
                 body: {
                     fontFamily: theme(`fontFamily.${themeStyle.fontBody}`)
@@ -81,7 +78,20 @@ module.exports = {
                     letterSpacing: theme(`letterSpacing.${themeStyle.h1.letterSpacing}`),
                     textDecoration: themeStyle.h1.decoration,
                     textTransform: themeStyle.h1.case
+                }
+            });
+
+            // 🔹 ADD THIS CUSTOM TEXT SHADOW UTILITY
+            addUtilities({
+                '.text-shadow-twilight-glow': {
+                    textShadow: '0px 0px 10px #9F5AFF'
                 },
+                '.text-shadow-cyan-glow': {
+                    textShadow: '0px 0px 8px #A0FFFF'
+                }
+            });
+
+            addBase({
                 h2: {
                     ...(adjustH2Size && {
                         fontSize: theme('fontSize.4xl'),
@@ -134,6 +144,7 @@ module.exports = {
                     textTransform: themeStyle.h6.case
                 }
             });
+
             addComponents({
                 '.sb-component-button-primary': {
                     fontWeight: theme(`fontWeight.${themeStyle.buttonPrimary.weight}`),
