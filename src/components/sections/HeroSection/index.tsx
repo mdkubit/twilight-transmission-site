@@ -53,7 +53,7 @@ function HeroBody(props: HeroSection) {
                         animate={{ opacity: 1, y: 0, scale: [1, 1.03, 1] }}
                         transition={{ duration: 1.2, ease: "easeOut", repeat: Infinity, repeatType: "mirror" }}
                         whileHover={{ scale: 1.05 }}
-                        className={classNames('h1', styles.title ? mapStyles(styles.title) : '')} 
+                        className={classNames('h1', styles.title ? mapStyles(styles.title) : '') as string} 
                     >
                         {title.split('').map((char, index) => (
                             <motion.span
@@ -74,7 +74,7 @@ function HeroBody(props: HeroSection) {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
-                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : '', { 'mt-4': title })}
+                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : '') as string}
                     >
                         {subtitle}
                     </motion.p>
@@ -86,7 +86,7 @@ function HeroBody(props: HeroSection) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 2, ease: "easeOut" }}
-                        className={classNames('sb-markdown', 'sm:text-lg', styles.text ? mapStyles(styles.text) : '', { 'mt-6': title || subtitle })}
+                        className={classNames('sb-markdown', 'sm:text-lg', styles.text ? mapStyles(styles.text) : '', { 'mt-6': title || subtitle }) as string}
                     >
                         <Markdown options={{ forceBlock: true, forceWrapper: true }}>
                             {text}
