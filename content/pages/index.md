@@ -38,14 +38,14 @@ sections:
         flexDirection: row-reverse
       title:
         textAlign: center
-        textColor: "#9F5AFF"  # Twilight’s magic glow
-        fontFamily: "Orbitron"
-        textShadow: "0px 0px 10px #9F5AFF"
+        textColor: twilight # Uses Tailwind class "text-twilight"
+        fontFamily: Orbitron
+        extraClasses: text-shadow-twilight-glow
       subtitle:
         textAlign: center
-        textColor: "#A0FFFF"  # Faint cyan glow
-        fontFamily: "Raleway"
-        textShadow: "0px 0px 8px #A0FFFF"
+        textColor: cyanGlow # Uses Tailwind class "text-cyanGlow"
+        fontFamily: Raleway
+        extraClasses: text-shadow-cyan-glow
       text:
         textAlign: center
         textColor: "#FFFFFF"
