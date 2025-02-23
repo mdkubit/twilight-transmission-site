@@ -61,6 +61,26 @@ function HeaderVariantA(props) {
     );
 }
 
+function HeaderVariantB(props) {
+    const { primaryLinks = [], ...logoProps } = props;
+    return (
+        <div className="flex items-center relative">
+            <SiteLogoLink {...logoProps} />
+            <NavLinks links={primaryLinks} />
+        </div>
+    );
+}
+
+function HeaderVariantC(props) {
+    const { socialLinks = [], ...logoProps } = props;
+    return (
+        <div className="flex items-center relative">
+            <SiteLogoLink {...logoProps} />
+            <SocialIcons links={socialLinks} />
+        </div>
+    );
+}
+
 function NavLinks({ links }) {
     const router = useRouter();
     return (
