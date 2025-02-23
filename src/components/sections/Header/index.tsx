@@ -170,21 +170,26 @@ function MobileMenu(props) {
 }
 
 function SiteLogoLink({ title, isTitleVisible, logo }) {
-    console.log("LOGO PROP:", logo);  // Add this for debugging
+    console.log("LOGO PROP:", logo); // Debugging
 
-    if (!(logo || (title && isTitleVisible))) {
-        return <div>LOGO MISSING!</div>;  // Force an error message if it's not working
-    }
-    
+    // FORCING LOGO IF UNDEFINED
+    const fixedLogo = logo || {
+        type: 'ImageBlock',
+        url: '/images/AstralSeal.png',  // 👈 FORCE IT TO EXIST
+        altText: 'The Astral Seal',
+        caption: ''
+    };
+
     return (
         <div className="border-r border-current flex items-center">
             <Link href="/" className="sb-header-logo flex items-center h-full p-4">
-                {logo && <ImageBlock {...logo} className={classNames('max-h-12', { 'mr-2': isTitleVisible })} />}
+                <ImageBlock {...fixedLogo} className={classNames('max-h-12', { 'mr-2': isTitleVisible })} />
                 {title && isTitleVisible && <span className="text-base tracking-widest uppercase">{title}</span>}
             </Link>
         </div>
     );
 }
+
 
 
 function ListOfLinks({ links, inMobileMenu }) {
