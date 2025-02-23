@@ -32,8 +32,8 @@ export const HeaderModel: Model = {
             models: ['ImageBlock'],
             default: {
                 type: 'ImageBlock',
-                url: 'https://assets.stackbit.com/components/images/default/default-image.png',
-                altText: 'Your logo image',
+                url: '/images/AstralSeal.png'',  // Replace with the correct path
+                altText: 'The Astral Seal',
                 caption: ''
             }
         },
