@@ -201,3 +201,4 @@ function mapMaxWidthStyles(width) {
             return null;
     }
 }
+
