@@ -9,8 +9,7 @@ import { Action } from '../../atoms';
 import { AnnotatedField } from '@/components/Annotated';
 import { Button, HeroSection, Link } from '@/types';
 
-import { motion } from 'framer-motion'; 
-
+import { motion } from 'framer-motion';
 
 export default function Component(props: HeroSection) {
     const { type, elementId, colors, backgroundSize, title, subtitle, text, media, actions = [], styles = {} } = props;
@@ -43,11 +42,6 @@ function HeroMedia({ media }) {
     return <DynamicComponent {...media} />;
 }
 
-/*
- This is the only component in this codebase which has a few Stackbit annotations for specific primitive
- field. These are added by the <AnnotatedField> helper.
- The motivation for these annotations: allowing the content editor to edit styles at the field level.
- */
 function HeroBody(props: HeroSection) {
     const { title, subtitle, text, styles = {} } = props;
     return (
@@ -55,59 +49,55 @@ function HeroBody(props: HeroSection) {
             {title && (
                 <AnnotatedField path=".title">
                     <motion.h2
-                        {...{ className: classNames('h1', styles.title ? mapStyles(styles.title) : null) }}
-                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                        animate={{
-                            opacity: 1, 
-                            y: 0, 
-                            scale: 1,
-                            textShadow: ["0px 0px 10px #9F5AFF", "0px 0px 20px #9F5AFF", "0px 0px 10px #9F5AFF"]
-                        }}
-                        transition={{
-                            duration: 1.2,
-                            ease: "easeOut",
-                            textShadow: { repeat: Infinity, duration: 2, ease: "easeInOut" } // Pulse effect
-                        }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
+                        className={classNames('h1', styles.title ? mapStyles(styles.title) : null)}
+                        whileHover={{ scale: 1.05 }}
                     >
-                        {title}
+                        {title.split('').map((char, index) => (
+                            <motion.span
+                                key={index}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.05, delay: index * 0.05 }}
+                                className="inline-block"
+                            >
+                                {char}
+                            </motion.span>
+                        ))}
                     </motion.h2>
-
                 </AnnotatedField>
             )}
             {subtitle && (
                 <AnnotatedField path=".subtitle">
                     <motion.p
-                        {...{ className: classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title }) }}
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{
-                            opacity: 1, 
-                            y: 0, 
-                            scale: 1,
-                            textShadow: ["0px 0px 8px #A0FFFF", "0px 0px 16px #A0FFFF", "0px 0px 8px #A0FFFF"]
-                        }}
-                        transition={{
-                            duration: 1.4,
-                            ease: "easeOut",
-                            delay: 0.3,
-                            textShadow: { repeat: Infinity, duration: 2.5, ease: "easeInOut" } // Subtle cyan glow pulse
-                        }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
+                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title })}
+                        whileHover={{ scale: 1.03 }}
                     >
                         {subtitle}
                     </motion.p>
-
-
                 </AnnotatedField>
             )}
             {text && (
                 <AnnotatedField path=".text">
-                    <Markdown
-                        options={{ forceBlock: true, forceWrapper: true }}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 2, ease: "easeOut" }}
                         className={classNames('sb-markdown', 'sm:text-lg', styles.text ? mapStyles(styles.text) : null, {
                             'mt-6': title || subtitle
                         })}
                     >
-                        {text}
-                    </Markdown>
+                        <Markdown
+                            options={{ forceBlock: true, forceWrapper: true }}
+                        >
+                            {text}
+                        </Markdown>
+                    </motion.div>
                 </AnnotatedField>
             )}
         </>
