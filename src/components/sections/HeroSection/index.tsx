@@ -9,6 +9,9 @@ import { Action } from '../../atoms';
 import { AnnotatedField } from '@/components/Annotated';
 import { Button, HeroSection, Link } from '@/types';
 
+import { motion } from 'framer-motion'; 
+
+
 export default function Component(props: HeroSection) {
     const { type, elementId, colors, backgroundSize, title, subtitle, text, media, actions = [], styles = {} } = props;
     const sectionFlexDirection = styles.self?.flexDirection ?? 'row';
@@ -51,12 +54,28 @@ function HeroBody(props: HeroSection) {
         <>
             {title && (
                 <AnnotatedField path=".title">
-                    <h2 className={classNames('h1', styles.title ? mapStyles(styles.title) : null)}>{title}</h2>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
+                        className={classNames('h1', styles.title ? mapStyles(styles.title) : null)}
+                    >
+                        {title}
+                    </motion.h2>
+
                 </AnnotatedField>
             )}
             {subtitle && (
                 <AnnotatedField path=".subtitle">
-                    <p className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title })}>{subtitle}</p>
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
+                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title })}
+                    >
+                        {subtitle}
+                    </motion.p>
+
                 </AnnotatedField>
             )}
             {text && (
