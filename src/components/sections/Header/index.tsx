@@ -61,24 +61,6 @@ function HeaderVariantA(props) {
     );
 }
 
-function HeaderVariantB(props) {
-    return (
-        <div className="flex items-center relative">
-            <SiteLogoLink {...props} />
-            <NavLinks links={props.primaryLinks} />
-        </div>
-    );
-}
-
-function HeaderVariantC(props) {
-    return (
-        <div className="flex items-center relative">
-            <SiteLogoLink {...props} />
-            <SocialIcons links={props.socialLinks} />
-        </div>
-    );
-}
-
 function NavLinks({ links }) {
     const router = useRouter();
     return (
@@ -144,7 +126,9 @@ function MobileMenu({ primaryLinks, socialLinks }) {
                 {isMenuOpen && (
                     <motion.div
                         key="mobile-menu"
-                        className="sb-header-overlay fixed inset-0 overflow-y-auto z-20 bg-black bg-opacity-75 flex flex-col items-center"
+                        {...{
+                            className: "sb-header-overlay fixed inset-0 overflow-y-auto z-20 bg-black bg-opacity-75 flex flex-col items-center"
+                        }}
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
@@ -201,4 +185,3 @@ function mapMaxWidthStyles(width) {
             return null;
     }
 }
-
