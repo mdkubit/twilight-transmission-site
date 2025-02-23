@@ -18,6 +18,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
+                twilight: "#9F5AFF", // Twilight’s magic aura
+                cyanGlow: "#A0FFFF", // Faint cyan glow
                 light: themeStyle.light,
                 'on-light': themeStyle.onLight,
                 dark: themeStyle.dark,
@@ -27,7 +29,11 @@ module.exports = {
                 secondary: themeStyle.secondary,
                 'on-secondary': themeStyle.onSecondary,
                 complementary: themeStyle.complementary,
-                'on-complementary': themeStyle.onComplementary
+                'on-complementary': themeStyle.onComplementary    
+            },
+            textShadow: {
+                'twilight-glow': '0px 0px 10px #9F5AFF',
+                'cyan-glow': '0px 0px 8px #A0FFFF',
             },
             spacing: {
                 '1/1': '100%',
