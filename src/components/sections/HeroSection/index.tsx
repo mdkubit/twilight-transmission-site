@@ -56,9 +56,18 @@ function HeroBody(props: HeroSection) {
                 <AnnotatedField path=".title">
                     <motion.h2
                         {...{ className: classNames('h1', styles.title ? mapStyles(styles.title) : null) }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: "easeOut" }}
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={{
+                            opacity: 1, 
+                            y: 0, 
+                            scale: 1,
+                            textShadow: ["0px 0px 10px #9F5AFF", "0px 0px 20px #9F5AFF", "0px 0px 10px #9F5AFF"]
+                        }}
+                        transition={{
+                            duration: 1.2,
+                            ease: "easeOut",
+                            textShadow: { repeat: Infinity, duration: 2, ease: "easeInOut" } // Pulse effect
+                        }}
                     >
                         {title}
                     </motion.h2>
@@ -69,9 +78,19 @@ function HeroBody(props: HeroSection) {
                 <AnnotatedField path=".subtitle">
                     <motion.p
                         {...{ className: classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title }) }}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{
+                            opacity: 1, 
+                            y: 0, 
+                            scale: 1,
+                            textShadow: ["0px 0px 8px #A0FFFF", "0px 0px 16px #A0FFFF", "0px 0px 8px #A0FFFF"]
+                        }}
+                        transition={{
+                            duration: 1.4,
+                            ease: "easeOut",
+                            delay: 0.3,
+                            textShadow: { repeat: Infinity, duration: 2.5, ease: "easeInOut" } // Subtle cyan glow pulse
+                        }}
                     >
                         {subtitle}
                     </motion.p>
