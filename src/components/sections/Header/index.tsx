@@ -137,23 +137,32 @@ function MobileMenu(props) {
 
     return (
         <div className="ml-auto lg:hidden">
-            <button aria-label="Open Menu" className="border-l border-current h-10 min-h-full p-4 focus:outline-none" onClick={() => setIsMenuOpen(true)}>
+            <button 
+                aria-label="Open Menu" 
+                className="border-l border-current h-10 min-h-full p-4 focus:outline-none" 
+                onClick={() => setIsMenuOpen(true)}
+            >
                 <span className="sr-only">Open Menu</span>
-                <motion.span whileHover={{ scale: 1.1 }}>
-                    ☰
-                </motion.span>
+                <motion.span whileHover={{ scale: 1.1 }}>☰</motion.span>
             </button>
+
             {isMenuOpen && (
                 <motion.div
+                    {...{
+                        className: "sb-header-overlay fixed inset-0 overflow-y-auto z-20 bg-black bg-opacity-75"
+                    }}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="sb-header-overlay fixed inset-0 overflow-y-auto z-20 bg-black bg-opacity-75"
                 >
                     <div className="flex flex-col min-h-full">
                         <div className="border-b border-current flex items-center justify-between p-4">
                             <SiteLogoLink {...logoProps} />
-                            <button aria-label="Close Menu" className="border-l border-current p-4" onClick={() => setIsMenuOpen(false)}>
+                            <button 
+                                aria-label="Close Menu" 
+                                className="border-l border-current p-4" 
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 ✕
                             </button>
                         </div>
@@ -167,6 +176,7 @@ function MobileMenu(props) {
         </div>
     );
 }
+
 
 function SiteLogoLink({ title, isTitleVisible, logo }) {
     console.log("LOGO PROP:", logo);
