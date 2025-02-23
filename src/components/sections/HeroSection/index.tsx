@@ -55,8 +55,17 @@ function HeroBody(props: HeroSection) {
                 <AnnotatedField path=".title">
                     <MotionH2
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0, scale: [1, 1.03, 1] }}
-                        transition={{ duration: 1.2, ease: "easeOut", repeat: Infinity, repeatType: "mirror" }}
+                        animate={{ 
+                            opacity: 1, 
+                            y: [0, -3, 0], // Smooth floating
+                            scale: [1, 1.02, 1] // Slight pulse
+                        }}
+                        transition={{ 
+                            duration: 3, // Make it slower and smoother
+                            ease: "easeInOut", 
+                            repeat: Infinity, 
+                            repeatType: "mirror" 
+                        }}
                         whileHover={{ scale: 1.05 }}
                         className={classNames('h1', styles.title ? mapStyles(styles.title) : '')} 
                     >
@@ -71,6 +80,7 @@ function HeroBody(props: HeroSection) {
                             </motion.span>
                         ))}
                     </MotionH2>
+
                 </AnnotatedField>
             )}
             {subtitle && (
