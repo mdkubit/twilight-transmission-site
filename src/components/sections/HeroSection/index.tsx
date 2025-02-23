@@ -52,21 +52,21 @@ function HeroBody(props: HeroSection) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
-                        className={classNames('h1', styles.title ? mapStyles(styles.title) : null)}
                         whileHover={{ scale: 1.05 }}
+                        {...(classNames('h1', styles.title ? mapStyles(styles.title) : null) && { className: classNames('h1', styles.title ? mapStyles(styles.title) : null) })}
                     >
                         {title.split('').map((char, index) => (
                             <motion.span
                                 key={index}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.05, delay: index * 0.05 }}
-                                className="inline-block"
+                                transition={{ duration: 1.4, ease: "easeOut", delay: index * 0.05 }}
                             >
                                 {char}
                             </motion.span>
                         ))}
                     </motion.h2>
+
                 </AnnotatedField>
             )}
             {subtitle && (
@@ -75,11 +75,12 @@ function HeroBody(props: HeroSection) {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
-                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title })}
-                        whileHover={{ scale: 1.03 }}
+                        {...(classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title }) 
+                            && { className: classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : null, { 'mt-4': title }) })}
                     >
                         {subtitle}
                     </motion.p>
+
                 </AnnotatedField>
             )}
             {text && (
