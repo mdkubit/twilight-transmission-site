@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
 
 import { Link, Action, Social } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
@@ -11,6 +12,7 @@ import MenuIcon from '../../svgs/menu';
 export default function Header(props) {
     const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
     const headerWidth = styles.self?.width ?? 'narrow';
+
     return (
         <header className={classNames('sb-component', 'sb-component-header', isSticky ? 'sticky top-0 z-10' : 'relative', 'border-b', 'border-current')}>
             <div
@@ -52,119 +54,98 @@ function HeaderVariants(props) {
 function HeaderVariantA(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
     return (
-        <div className="flex items-stretch relative">
+        <div className="flex items-center relative">
             <SiteLogoLink {...logoProps} />
-            {primaryLinks.length > 0 && (
-                <ul className="hidden lg:flex divide-x divide-current border-r border-current">
-                    <ListOfLinks links={primaryLinks} inMobileMenu={false} />
-                </ul>
-            )}
-            {socialLinks.length > 0 && (
-                <ul className="hidden lg:flex border-l border-current ml-auto">
-                    <ListOfSocialLinks links={socialLinks} inMobileMenu={false} />
-                </ul>
-            )}
-            {(primaryLinks.length > 0 || socialLinks.length > 0) && <MobileMenu {...props} />}
+            <NavLinks links={primaryLinks} />
+            <SocialIcons links={socialLinks} />
+            <MobileMenu {...props} />
         </div>
     );
 }
 
-function HeaderVariantB(props) {
-    const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
+function NavLinks({ links }) {
+    const router = useRouter();
     return (
-        <div className="flex items-stretch relative">
-            <SiteLogoLink {...logoProps} />
-            {primaryLinks.length > 0 && (
-                <ul className="hidden lg:flex border-l border-current divide-x divide-current ml-auto">
-                    <ListOfLinks links={primaryLinks} inMobileMenu={false} />
-                </ul>
-            )}
-            {socialLinks.length > 0 && (
-                <ul
-                    className={classNames('hidden', 'lg:flex', 'border-l', 'border-current', {
-                        'ml-auto': primaryLinks.length === 0
-                    })}
-                >
-                    <ListOfSocialLinks links={socialLinks} inMobileMenu={false} />
-                </ul>
-            )}
-            {(primaryLinks.length > 0 || socialLinks.length > 0) && <MobileMenu {...props} />}
-        </div>
+        <ul className="hidden lg:flex space-x-6">
+            {links.map((link, index) => {
+                const isActive = router.pathname === link.url;
+                return (
+                    <motion.li
+                        key={index}
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    >
+                        <Link
+                            {...link}
+                            className={classNames(
+                                'relative px-4 py-2 text-lg transition duration-300',
+                                isActive ? 'text-twilight font-bold' : 'text-gray-300',
+                                'hover:text-cyanGlow'
+                            )}
+                        >
+                            {link.label}
+                            <motion.span
+                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        </Link>
+                    </motion.li>
+                );
+            })}
+        </ul>
     );
 }
 
-function HeaderVariantC(props) {
-    const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
+function SocialIcons({ links }) {
     return (
-        <div className="flex items-stretch relative">
-            <SiteLogoLink {...logoProps} />
-            {socialLinks.length > 0 && (
-                <ul className="hidden lg:flex border-l border-current ml-auto">
-                    <ListOfSocialLinks links={socialLinks} inMobileMenu={false} />
-                </ul>
-            )}
-            {primaryLinks.length > 0 && (
-                <ul
-                    className={classNames('hidden', 'lg:flex', 'border-l', 'border-current', 'divide-x', 'divide-current', {
-                        'ml-auto': primaryLinks.length === 0
-                    })}
+        <ul className="hidden lg:flex space-x-4 ml-auto">
+            {links.map((link, index) => (
+                <motion.li
+                    key={index}
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
-                    <ListOfLinks links={primaryLinks} inMobileMenu={false} />
-                </ul>
-            )}
-            {(primaryLinks.length > 0 || socialLinks.length > 0) && <MobileMenu {...props} />}
-        </div>
+                    <Action {...link} className="text-lg hover:text-twilight transition duration-300" />
+                </motion.li>
+            ))}
+        </ul>
     );
 }
 
 function MobileMenu(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const router = useRouter();
-
-    useEffect(() => {
-        const handleRouteChange = () => {
-            setIsMenuOpen(false);
-        };
-        router.events.on('routeChangeStart', handleRouteChange);
-
-        return () => {
-            router.events.off('routeChangeStart', handleRouteChange);
-        };
-    }, [router.events]);
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     return (
         <div className="ml-auto lg:hidden">
             <button aria-label="Open Menu" className="border-l border-current h-10 min-h-full p-4 focus:outline-none" onClick={() => setIsMenuOpen(true)}>
                 <span className="sr-only">Open Menu</span>
-                <MenuIcon className="fill-current h-6 w-6" />
+                <motion.span whileHover={{ scale: 1.1 }}>
+                    ☰
+                </motion.span>
             </button>
-            <div className={classNames('sb-header-overlay', 'fixed', 'inset-0', 'overflow-y-auto', 'z-20', isMenuOpen ? 'block' : 'hidden')}>
-                <div className="flex flex-col min-h-full">
-                    <div className="border-b border-current flex items-stretch justify-between">
-                        <SiteLogoLink {...logoProps} />
-                        <div className="border-l border-current">
-                            <button aria-label="Close Menu" className="h-10 min-h-full p-4 focus:outline-none" onClick={() => setIsMenuOpen(false)}>
-                                <CloseIcon className="fill-current h-6 w-6" />
+            {isMenuOpen && (
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="sb-header-overlay fixed inset-0 overflow-y-auto z-20 bg-black bg-opacity-75"
+                >
+                    <div className="flex flex-col min-h-full">
+                        <div className="border-b border-current flex items-center justify-between p-4">
+                            <SiteLogoLink {...logoProps} />
+                            <button aria-label="Close Menu" className="border-l border-current p-4" onClick={() => setIsMenuOpen(false)}>
+                                ✕
                             </button>
                         </div>
-                    </div>
-                    {(primaryLinks.length > 0 || socialLinks.length > 0) && (
-                        <div className="flex flex-col justify-center grow px-4 py-20 space-y-12">
-                            {primaryLinks.length > 0 && (
-                                <ul className="space-y-6">
-                                    <ListOfLinks links={primaryLinks} inMobileMenu={true} />
-                                </ul>
-                            )}
-                            {socialLinks.length > 0 && (
-                                <ul className="flex flex-wrap justify-center">
-                                    <ListOfSocialLinks links={socialLinks} inMobileMenu={true} />
-                                </ul>
-                            )}
+                        <div className="flex flex-col items-center space-y-6 py-12">
+                            <NavLinks links={primaryLinks} />
+                            <SocialIcons links={socialLinks} />
                         </div>
-                    )}
-                </div>
-            </div>
+                    </div>
+                </motion.div>
+            )}
         </div>
     );
 }
@@ -172,10 +153,10 @@ function MobileMenu(props) {
 function SiteLogoLink({ title, isTitleVisible, logo }) {
     console.log("LOGO PROP:", logo); // Debugging
 
-    // FORCING LOGO IF UNDEFINED
+    // FORCE LOGO IF UNDEFINED
     const fixedLogo = logo || {
         type: 'ImageBlock',
-        url: '/images/AstralSeal.png',  // 👈 FORCE IT TO EXIST
+        url: '/images/AstralSeal.png',  // 👈 FORCED LOGO PATH
         altText: 'The Astral Seal',
         caption: ''
     };
@@ -188,27 +169,6 @@ function SiteLogoLink({ title, isTitleVisible, logo }) {
             </Link>
         </div>
     );
-}
-
-
-
-function ListOfLinks({ links, inMobileMenu }) {
-    return links.map((link, index) => (
-        <li key={index} className={classNames(inMobileMenu ? 'text-center w-full' : 'inline-flex items-stretch')}>
-            <Action
-                {...link}
-                className={classNames(inMobileMenu ? 'text-xl' : 'sb-component-link-fill p-4', 'font-normal', 'text-base', 'tracking-widest', 'uppercase')}
-            />
-        </li>
-    ));
-}
-
-function ListOfSocialLinks({ links, inMobileMenu = false }) {
-    return links.map((link, index) => (
-        <li key={index} className={classNames(inMobileMenu ? 'border border-current -ml-px -mt-px' : 'inline-flex items-stretch')}>
-            <Social {...link} className={classNames('sb-component-social-fill', 'text-base', inMobileMenu ? 'p-5' : 'p-4')} />
-        </li>
-    ));
 }
 
 function mapMaxWidthStyles(width) {
