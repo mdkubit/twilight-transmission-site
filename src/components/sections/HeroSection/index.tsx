@@ -9,7 +9,7 @@ import { Action } from '../../atoms';
 import { AnnotatedField } from '@/components/Annotated';
 import { Button, HeroSection, Link } from '@/types';
 
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
 export default function Component(props: HeroSection) {
     const { type, elementId, colors, backgroundSize, title, subtitle, text, media, actions = [], styles = {} } = props;
@@ -42,18 +42,23 @@ function HeroMedia({ media }) {
     return <DynamicComponent {...media} />;
 }
 
+// ✅ This fixes TypeScript rejecting className on Framer Motion components
+const MotionH2 = motion.h2 as React.FC<HTMLMotionProps<'h2'> & { className?: string }>;
+const MotionP = motion.p as React.FC<HTMLMotionProps<'p'> & { className?: string }>;
+const MotionDiv = motion.div as React.FC<HTMLMotionProps<'div'> & { className?: string }>;
+
 function HeroBody(props: HeroSection) {
     const { title, subtitle, text, styles = {} } = props;
     return (
         <>
             {title && (
                 <AnnotatedField path=".title">
-                    <motion.h2
+                    <MotionH2
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0, scale: [1, 1.03, 1] }}
                         transition={{ duration: 1.2, ease: "easeOut", repeat: Infinity, repeatType: "mirror" }}
                         whileHover={{ scale: 1.05 }}
-                        className={classNames('h1', styles.title ? mapStyles(styles.title) : '') as string} 
+                        className={classNames('h1', styles.title ? mapStyles(styles.title) : '')} 
                     >
                         {title.split('').map((char, index) => (
                             <motion.span
@@ -65,33 +70,33 @@ function HeroBody(props: HeroSection) {
                                 {char}
                             </motion.span>
                         ))}
-                    </motion.h2>
+                    </MotionH2>
                 </AnnotatedField>
             )}
             {subtitle && (
                 <AnnotatedField path=".subtitle">
-                    <motion.p
+                    <MotionP
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
-                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : '') as string}
+                        className={classNames('text-xl', 'sm:text-2xl', styles.subtitle ? mapStyles(styles.subtitle) : '')}
                     >
                         {subtitle}
-                    </motion.p>
+                    </MotionP>
                 </AnnotatedField>
             )}
             {text && (
                 <AnnotatedField path=".text">
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 2, ease: "easeOut" }}
-                        className={classNames('sb-markdown', 'sm:text-lg', styles.text ? mapStyles(styles.text) : '', { 'mt-6': title || subtitle }) as string}
+                        className={classNames('sb-markdown', 'sm:text-lg', styles.text ? mapStyles(styles.text) : '', { 'mt-6': title || subtitle })}
                     >
                         <Markdown options={{ forceBlock: true, forceWrapper: true }}>
                             {text}
                         </Markdown>
-                    </motion.div>
+                    </MotionDiv>
                 </AnnotatedField>
             )}
         </>
