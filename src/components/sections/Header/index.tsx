@@ -63,18 +63,32 @@ function HeaderVariantA(props) {
     );
 }
 
+function HeaderVariantB(props) {
+    return (
+        <div className="flex items-center relative">
+            <SiteLogoLink {...props} />
+            <NavLinks links={props.primaryLinks} />
+        </div>
+    );
+}
+
+function HeaderVariantC(props) {
+    return (
+        <div className="flex items-center relative">
+            <SiteLogoLink {...props} />
+            <SocialIcons links={props.socialLinks} />
+        </div>
+    );
+}
+
 function NavLinks({ links }) {
     const router = useRouter();
     return (
         <ul className="hidden lg:flex space-x-6">
             {links.map((link, index) => {
-                const isActive = router.pathname === link.url;
+                const isActive = router.pathname === (link.url || '#');
                 return (
-                    <motion.li
-                        key={index}
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    >
+                    <li key={index}>
                         <Link
                             {...link}
                             className={classNames(
@@ -90,7 +104,7 @@ function NavLinks({ links }) {
                                 transition={{ duration: 0.3 }}
                             />
                         </Link>
-                    </motion.li>
+                    </li>
                 );
             })}
         </ul>
@@ -151,12 +165,11 @@ function MobileMenu(props) {
 }
 
 function SiteLogoLink({ title, isTitleVisible, logo }) {
-    console.log("LOGO PROP:", logo); // Debugging
+    console.log("LOGO PROP:", logo);
 
-    // FORCE LOGO IF UNDEFINED
     const fixedLogo = logo || {
         type: 'ImageBlock',
-        url: '/images/AstralSeal.png',  // 👈 FORCED LOGO PATH
+        url: '/images/AstralSeal.png',
         altText: 'The Astral Seal',
         caption: ''
     };
