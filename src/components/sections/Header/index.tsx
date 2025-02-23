@@ -99,7 +99,9 @@ function NavLinks({ links }) {
                         >
                             {link.label}
                             <motion.span
-                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                {...{
+                                    className: "absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                }}
                                 animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
                                 transition={{ duration: 0.3 }}
                             />
@@ -110,6 +112,8 @@ function NavLinks({ links }) {
         </ul>
     );
 }
+
+
 
 function SocialIcons({ links }) {
     return (
