@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { Link, Action, Social } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
-import CloseIcon from '../../svgs/close';
-import MenuIcon from '../../svgs/menu';
 
 export default function Header(props) {
     const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
@@ -99,7 +97,9 @@ function NavLinks({ links }) {
                         >
                             {link.label}
                             <motion.span
-                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                {...{
+                                    className: "absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                }}
                                 animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
                                 transition={{ duration: 0.3 }}
                             />
