@@ -176,7 +176,13 @@ function SiteLogoLink({ title, isTitleVisible, logo }) {
     return (
         <div className="border-r border-current flex items-center">
             <Link href="/" className="sb-header-logo flex items-center h-full p-4">
-                {logo && <ImageBlock {...logo} className={classNames('max-h-12', { 'mr-2': isTitleVisible })} />}
+                {logo && (
+                    <img
+                        src={logo.url}
+                        alt={logo.altText || 'Logo'}
+                        className="max-h-12 w-auto"
+                    />
+                )}
                 {title && isTitleVisible && <span className="text-base tracking-widest uppercase">{title}</span>}
             </Link>
         </div>
