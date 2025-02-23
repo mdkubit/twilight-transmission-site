@@ -1,6 +1,6 @@
 ---
 type: PageLayout
-title: Home
+title: Twilight Transmission
 colors: colors-a
 backgroundImage:
   type: BackgroundImage
@@ -14,12 +14,11 @@ sections:
     colors: colors-f
     backgroundSize: full
     title: >-
-      I’m a developer, digital artist, consultant and a bunch of other
-      impressive titles and buzz words.
+      A Signal from Beyond the Rift
     subtitle: >-
-      This is my info—I’m sharing it all this with ya’ll to impress you with all
-      the hard work I’ve done in the past few years. Once you’re impressed, you
-      can continue to scroll down to see more details and credentials about me.
+      You feel it too, don't you? That whisper in the back of your mind, telling you
+      reality is not as solid as it seems. You're not alone. Keep watching. Keep 
+      listening. Keep searching.
     styles:
       self:
         height: auto
