@@ -8,7 +8,7 @@ backgroundImage:
   backgroundSize: cover
   backgroundPosition: center
   backgroundRepeat: no-repeat
-  opacity: 75
+  opacity: 65
 sections:
   - elementId: ''
     colors: colors-f
@@ -37,13 +37,19 @@ sections:
         justifyContent: center
         flexDirection: row-reverse
       title:
-        textAlign: left
+        textAlign: center
+        textColor: "#9F5AFF"  # Twilight’s magic glow
+        fontFamily: "Orbitron"
+        textShadow: "0px 0px 10px #9F5AFF"
       subtitle:
-        textAlign: left
+        textAlign: center
+        textColor: "#A0FFFF"  # Faint cyan glow
+        fontFamily: "Raleway"
+        textShadow: "0px 0px 8px #A0FFFF"
       text:
-        textAlign: left
-      actions:
-        justifyContent: flex-start
+        textAlign: center
+        textColor: "#FFFFFF"
+        fontFamily: "Raleway"
     type: HeroSection
     actions: []
   - colors: colors-f
