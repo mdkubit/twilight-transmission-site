@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 
 import { Link, Action, Social } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
+import SiteLogoLink from '../../components/SiteLogoLink';
 
 export default function Header(props) {
     const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
@@ -35,31 +36,36 @@ export default function Header(props) {
     );
 }
 
-function mapMaxWidthStyles(width) {
-    switch (width) {
-        case 'narrow':
-            return 'max-w-7xl';
-        case 'wide':
-            return 'max-w-screen-2xl';
-        case 'full':
-            return 'max-w-full';
+function HeaderVariants(props) {
+    const { variant = 'variant-a', ...rest } = props;
+
+    console.log("🔍 HeaderVariants is rendering with variant:", variant);
+
+    switch (variant) {
+        case 'variant-a':
+            return <HeaderVariantA {...rest} />;
+        case 'variant-b':
+            return <HeaderVariantB {...rest} />;
+        case 'variant-c':
+            return <HeaderVariantC {...rest} />;
         default:
             return null;
     }
 }
 
-function HeaderVariants(props) {
-    const { variant = 'variant-a', ...rest } = props;
-    return variant === 'variant-a' ? <HeaderVariantA {...rest} /> : variant === 'variant-b' ? <HeaderVariantB {...rest} /> : <HeaderVariantC {...rest} />;
-}
-
 function HeaderVariantA(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
+    
+    console.log("✅ HeaderVariantA is rendering!");
+    
     return (
         <div className="flex items-center relative">
             <SiteLogoLink {...logoProps} />
             <NavLinks links={primaryLinks} />
             <SocialIcons links={socialLinks} />
+            <button className="bg-red-500 text-white p-4 z-50">
+                FORCED BUTTON HERE
+            </button>
             <MobileMenu {...props} />
         </div>
     );
@@ -101,7 +107,8 @@ function NavLinks({ links }) {
                         >
                             {link.label}
                             <motion.span
-                                style={{ position: 'absolute', left: 0, bottom: 0, width: '100%', height: '0.5rem', backgroundColor: 'var(--cyanGlow)', transformOrigin: 'left', scaleX: isActive ? 1 : 0 }}
+                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
                                 transition={{ duration: 0.3 }}
                             />
                         </Link>
@@ -128,45 +135,15 @@ function SocialIcons({ links }) {
     );
 }
 
-function MobileMenu(props) {
-    const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    return (
-        <div className="ml-auto lg:hidden">
-            <button 
-                aria-label="Open Menu" 
-                className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-red-500 text-white" 
-                onClick={() => setIsMenuOpen(true)}
-            >
-                MENU
-            </button>
-
-            {isMenuOpen && (
-                <motion.div
-                    style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.75)', zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                >
-                    <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
-                        <div className="flex justify-between items-center border-b border-current pb-3">
-                            <SiteLogoLink {...logoProps} />
-                            <button 
-                                aria-label="Close Menu" 
-                                className="border-l border-current p-4" 
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                ✕
-                            </button>
-                        </div>
-                        <div className="flex flex-col items-center space-y-6 py-6">
-                            <NavLinks links={primaryLinks} />
-                            <SocialIcons links={socialLinks} />
-                        </div>
-                    </div>
-                </motion.div>
-            )}
-        </div>
-    );
+function mapMaxWidthStyles(width) {
+    switch (width) {
+        case 'narrow':
+            return 'max-w-7xl';
+        case 'wide':
+            return 'max-w-screen-2xl';
+        case 'full':
+            return 'max-w-full';
+        default:
+            return null;
+    }
 }
