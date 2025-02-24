@@ -8,7 +8,7 @@ import { Link, Action, Social } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
 
 export default function Header(props) {
-    const { headerVariant = 'variant-a', isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
+    const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
     const headerWidth = styles.self?.width ?? 'narrow';
 
     return (
@@ -103,7 +103,7 @@ function NavLinks({ links }) {
                         >
                             {link.label}
                             <motion.span
-                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                style={{ position: 'absolute', left: 0, bottom: 0, width: '100%', height: '0.5rem', backgroundColor: 'cyan' }}
                                 animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
                                 transition={{ duration: 0.3 }}
                             />
@@ -139,15 +139,16 @@ function MobileMenu(props) {
         <div className="ml-auto lg:hidden">
             <button 
                 aria-label="Open Menu" 
-                className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-blue-500 text-white" 
+                className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-red-500 text-white" 
                 onClick={() => setIsMenuOpen(true)}
             >
+                <span className="sr-only">Open Menu</span>
                 ☰
             </button>
 
             {isMenuOpen && (
                 <motion.div
-                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
+                    style={{ position: 'fixed', inset: 0, backgroundColor: 'black', opacity: 0.75, zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -181,7 +182,6 @@ function SiteLogoLink({ title, isTitleVisible, logo }) {
         altText: 'The Astral Seal',
         caption: ''
     };
-
     return (
         <div className="border-r border-current flex items-center">
             <Link href="/" className="sb-header-logo flex items-center h-full p-4">
@@ -190,8 +190,4 @@ function SiteLogoLink({ title, isTitleVisible, logo }) {
             </Link>
         </div>
     );
-}
-
-function mapMaxWidthStyles(width) {
-    return width === 'wide' ? 'max-w-screen-2xl' : width === 'full' ? 'max-w-full' : 'max-w-7xl';
 }
