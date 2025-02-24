@@ -14,70 +14,17 @@ export default function Header(props) {
     return (
         <header className={classNames('sb-component', 'sb-component-header', isSticky ? 'sticky top-0 z-10' : 'relative', 'border-b', 'border-current')}>
             <div
-                className={classNames('mx-auto', mapMaxWidthStyles(headerWidth), {
+                className={classNames('mx-auto flex items-center justify-between', mapMaxWidthStyles(headerWidth), {
                     'xl:border-l xl:border-r border-current': headerWidth === 'narrow',
                     '2xl:border-l 2xl:border-r border-current': headerWidth === 'wide'
                 })}
             >
-                <Link href="#main" className="sr-only">
-                    Skip to main content
-                </Link>
-                <HeaderVariants
-                    variant={headerVariant}
-                    title={title}
-                    isTitleVisible={isTitleVisible}
-                    logo={logo}
-                    primaryLinks={primaryLinks}
-                    socialLinks={socialLinks}
-                />
+                <SiteLogoLink title={title} isTitleVisible={isTitleVisible} logo={logo} />
+                <NavLinks links={primaryLinks} />
+                <SocialIcons links={socialLinks} />
+                <MobileMenu primaryLinks={primaryLinks} socialLinks={socialLinks} />
             </div>
         </header>
-    );
-}
-
-function HeaderVariants(props) {
-    const { variant = 'variant-a', ...rest } = props;
-    switch (variant) {
-        case 'variant-a':
-            return <HeaderVariantA {...rest} />;
-        case 'variant-b':
-            return <HeaderVariantB {...rest} />;
-        case 'variant-c':
-            return <HeaderVariantC {...rest} />;
-        default:
-            return null;
-    }
-}
-
-function HeaderVariantA(props) {
-    const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
-    return (
-        <div className="flex items-center relative">
-            <SiteLogoLink {...logoProps} />
-            <NavLinks links={primaryLinks} />
-            <SocialIcons links={socialLinks} />
-            <MobileMenu primaryLinks={primaryLinks} socialLinks={socialLinks} />
-        </div>
-    );
-}
-
-function HeaderVariantB(props) {
-    const { primaryLinks = [], ...logoProps } = props;
-    return (
-        <div className="flex items-center relative">
-            <SiteLogoLink {...logoProps} />
-            <NavLinks links={primaryLinks} />
-        </div>
-    );
-}
-
-function HeaderVariantC(props) {
-    const { socialLinks = [], ...logoProps } = props;
-    return (
-        <div className="flex items-center relative">
-            <SiteLogoLink {...logoProps} />
-            <SocialIcons links={socialLinks} />
-        </div>
     );
 }
 
@@ -98,13 +45,6 @@ function NavLinks({ links }) {
                             )}
                         >
                             {link.label}
-                            <motion.span
-                                {...{
-                                    className: "absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
-                                }}
-                                animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
-                                transition={{ duration: 0.3 }}
-                            />
                         </Link>
                     </li>
                 );
@@ -115,13 +55,9 @@ function NavLinks({ links }) {
 
 function SocialIcons({ links }) {
     return (
-        <ul className="hidden lg:flex space-x-4 ml-auto">
+        <ul className="hidden lg:flex space-x-4">
             {links.map((link, index) => (
-                <motion.li
-                    key={index}
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                >
+                <motion.li key={index} whileHover={{ scale: 1.2 }} transition={{ duration: 0.3 }}>
                     <Action {...link} className="text-lg hover:text-twilight transition duration-300" />
                 </motion.li>
             ))}
@@ -133,39 +69,48 @@ function MobileMenu({ primaryLinks, socialLinks }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <div className="ml-auto lg:hidden">
+        <div className="lg:hidden flex">
+            {/* 🔹 Ensuring the menu button is **always** visible */}
             <button 
                 aria-label="Open Menu" 
-                className="border-l border-current h-10 min-h-full p-4 focus:outline-none block lg:hidden" 
+                className="border border-current h-10 w-10 p-2 rounded-lg focus:outline-none flex items-center justify-center bg-gray-800 text-white"
                 onClick={() => setIsMenuOpen(true)}
             >
-                <motion.span whileHover={{ scale: 1.1 }}>☰</motion.span>
+                ☰
             </button>
 
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
                         key="mobile-menu"
-                        {...{
-                            className: "sb-header-overlay fixed inset-0 overflow-y-auto z-20 bg-black bg-opacity-75 flex flex-col items-center"
-                        }}
+                        className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                     >
-                        <div className="border-b border-current flex items-center justify-between w-full p-4">
+                        <div className="absolute top-4 right-4">
                             <button 
                                 aria-label="Close Menu" 
-                                className="border-l border-current p-4" 
+                                className="p-3 bg-white text-black rounded-full shadow-lg"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 ✕
                             </button>
                         </div>
-                        <div className="flex flex-col items-center space-y-6 py-12">
-                            <NavLinks links={primaryLinks} />
-                            <SocialIcons links={socialLinks} />
-                        </div>
+                        <ul className="flex flex-col space-y-6 text-white text-2xl">
+                            {primaryLinks.map((link, index) => (
+                                <li key={index}>
+                                    <Link {...link} className="hover:text-cyanGlow">{link.label}</Link>
+                                </li>
+                            ))}
+                        </ul>
+                        <ul className="flex space-x-6 mt-8">
+                            {socialLinks.map((link, index) => (
+                                <motion.li key={index} whileHover={{ scale: 1.2 }} transition={{ duration: 0.3 }}>
+                                    <Action {...link} className="text-lg hover:text-cyanGlow transition duration-300" />
+                                </motion.li>
+                            ))}
+                        </ul>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -174,8 +119,6 @@ function MobileMenu({ primaryLinks, socialLinks }) {
 }
 
 function SiteLogoLink({ title, isTitleVisible, logo }) {
-    console.log("LOGO PROP:", logo);
-
     const fixedLogo = logo || {
         type: 'ImageBlock',
         url: '/images/AstralSeal.png',
