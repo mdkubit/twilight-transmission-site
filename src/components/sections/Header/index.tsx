@@ -4,28 +4,8 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 
-import { Link, Action } from '../../atoms';
+import { Link, Action, Social } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
-
-function SiteLogoLink({ title, isTitleVisible, logo }) {
-    console.log("LOGO PROP:", logo);
-
-    const fixedLogo = logo || {
-        type: 'ImageBlock',
-        url: '/images/AstralSeal.png',
-        altText: 'The Astral Seal',
-        caption: ''
-    };
-
-    return (
-        <div className="border-r border-current flex items-center">
-            <Link href="/" className="sb-header-logo flex items-center h-full p-4">
-                <ImageBlock {...fixedLogo} className={classNames('max-h-12', { 'mr-2': isTitleVisible })} />
-                {title && isTitleVisible && <span className="text-base tracking-widest uppercase">{title}</span>}
-            </Link>
-        </div>
-    );
-}
 
 export default function Header(props) {
     const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
@@ -57,9 +37,9 @@ export default function Header(props) {
 
 function HeaderVariants(props) {
     const { variant = 'variant-a', ...rest } = props;
-
+    
     console.log("🔍 HeaderVariants is rendering with variant:", variant);
-
+    
     switch (variant) {
         case 'variant-a':
             return <HeaderVariantA {...rest} />;
@@ -74,14 +54,17 @@ function HeaderVariants(props) {
 
 function HeaderVariantA(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
-
+    
     console.log("✅ HeaderVariantA is rendering!");
-
+    
     return (
         <div className="flex items-center relative">
             <SiteLogoLink {...logoProps} />
             <NavLinks links={primaryLinks} />
             <SocialIcons links={socialLinks} />
+            <button className="bg-red-500 text-white p-4 z-50">
+                FORCED BUTTON HERE
+            </button>
             <MobileMenu {...props} />
         </div>
     );
@@ -123,11 +106,9 @@ function NavLinks({ links }) {
                         >
                             {link.label}
                             <motion.span
-                                {...{
-                                    animate: isActive ? { scaleX: 1 } : { scaleX: 0 },
-                                    transition: { duration: 0.3 }
-                                }}
-                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                {...{ className: "absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0" }}
+                                animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
+                                transition={{ duration: 0.3 }}
                             />
                         </Link>
                     </li>
@@ -167,13 +148,12 @@ function MobileMenu(props) {
                 <span className="sr-only">Open Menu</span>
                 MENU BUTTON HERE
             </button>
-
             {isMenuOpen && (
                 <motion.div
+                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
                 >
                     <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
                         <div className="flex justify-between items-center border-b border-current pb-3">
@@ -195,17 +175,4 @@ function MobileMenu(props) {
             )}
         </div>
     );
-}
-
-function mapMaxWidthStyles(width) {
-    switch (width) {
-        case 'narrow':
-            return 'max-w-7xl';
-        case 'wide':
-            return 'max-w-screen-2xl';
-        case 'full':
-            return 'max-w-full';
-        default:
-            return null;
-    }
 }
