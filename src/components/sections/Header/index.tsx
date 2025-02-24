@@ -211,3 +211,4 @@ function mapMaxWidthStyles(width) {
         default:
             return null;
     }
+}
