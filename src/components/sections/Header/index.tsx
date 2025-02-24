@@ -37,9 +37,9 @@ export default function Header(props) {
 
 function HeaderVariants(props) {
     const { variant = 'variant-a', ...rest } = props;
-    
+
     console.log("🔍 HeaderVariants is rendering with variant:", variant);
-    
+
     switch (variant) {
         case 'variant-a':
             return <HeaderVariantA {...rest} />;
@@ -54,11 +54,12 @@ function HeaderVariants(props) {
 
 function HeaderVariantA(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
-    
+
     console.log("✅ HeaderVariantA is rendering!");
-    
+
     return (
         <div className="flex items-center relative">
+
             <SiteLogoLink {...logoProps} />
             <NavLinks links={primaryLinks} />
             <SocialIcons links={socialLinks} />
@@ -148,9 +149,11 @@ function MobileMenu(props) {
                 <span className="sr-only">Open Menu</span>
                 MENU BUTTON HERE
             </button>
+
+
             {isMenuOpen && (
                 <motion.div
-                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
+                    {...{ className: "fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center" }}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -177,3 +180,34 @@ function MobileMenu(props) {
     );
 }
 
+function SiteLogoLink({ title, isTitleVisible, logo }) {
+    console.log("LOGO PROP:", logo);
+
+    const fixedLogo = logo || {
+        type: 'ImageBlock',
+        url: '/images/AstralSeal.png',
+        altText: 'The Astral Seal',
+        caption: ''
+    };
+
+    return (
+        <div className="border-r border-current flex items-center">
+            <Link href="/" className="sb-header-logo flex items-center h-full p-4">
+                <ImageBlock {...fixedLogo} className={classNames('max-h-12', { 'mr-2': isTitleVisible })} />
+                {title && isTitleVisible && <span className="text-base tracking-widest uppercase">{title}</span>}
+            </Link>
+        </div>
+    );
+}
+
+function mapMaxWidthStyles(width) {
+    switch (width) {
+        case 'narrow':
+            return 'max-w-7xl';
+        case 'wide':
+            return 'max-w-screen-2xl';
+        case 'full':
+            return 'max-w-full';
+        default:
+            return null;
+    }
