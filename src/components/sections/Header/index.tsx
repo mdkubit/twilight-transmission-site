@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-import { Link, Action, Social } from '../../atoms';
+import { Link, Action } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
 
 export default function Header(props) {
@@ -13,18 +13,31 @@ export default function Header(props) {
 
     return (
         <header className={classNames('sb-component', 'sb-component-header', isSticky ? 'sticky top-0 z-10' : 'relative', 'border-b', 'border-current')}>
-            <div
-                className={classNames('mx-auto flex items-center justify-between', mapMaxWidthStyles(headerWidth), {
-                    'xl:border-l xl:border-r border-current': headerWidth === 'narrow',
-                    '2xl:border-l 2xl:border-r border-current': headerWidth === 'wide'
-                })}
-            >
-                <SiteLogoLink title={title} isTitleVisible={isTitleVisible} logo={logo} />
-                <NavLinks links={primaryLinks} />
-                <SocialIcons links={socialLinks} />
-                <MobileMenu primaryLinks={primaryLinks} socialLinks={socialLinks} />
+            <div className={classNames('mx-auto', mapMaxWidthStyles(headerWidth), { 'xl:border-l xl:border-r border-current': headerWidth === 'narrow', '2xl:border-l 2xl:border-r border-current': headerWidth === 'wide' })}>
+                <Link href="#main" className="sr-only">
+                    Skip to main content
+                </Link>
+                <HeaderVariantA
+                    title={title}
+                    isTitleVisible={isTitleVisible}
+                    logo={logo}
+                    primaryLinks={primaryLinks}
+                    socialLinks={socialLinks}
+                />
             </div>
         </header>
+    );
+}
+
+function HeaderVariantA(props) {
+    const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
+    return (
+        <div className="flex items-center relative">
+            <SiteLogoLink {...logoProps} />
+            <NavLinks links={primaryLinks} />
+            <SocialIcons links={socialLinks} />
+            <MobileMenu {...props} />
+        </div>
     );
 }
 
@@ -36,16 +49,7 @@ function NavLinks({ links }) {
                 const isActive = router.pathname === (link.url || '#');
                 return (
                     <li key={index}>
-                        <Link
-                            {...link}
-                            className={classNames(
-                                'relative px-4 py-2 text-lg transition duration-300',
-                                isActive ? 'text-twilight font-bold' : 'text-gray-300',
-                                'hover:text-cyanGlow'
-                            )}
-                        >
-                            {link.label}
-                        </Link>
+                        <Link {...link} className={classNames('relative px-4 py-2 text-lg transition duration-300', isActive ? 'text-twilight font-bold' : 'text-gray-300', 'hover:text-cyanGlow')}> {link.label} </Link>
                     </li>
                 );
             })}
@@ -55,9 +59,9 @@ function NavLinks({ links }) {
 
 function SocialIcons({ links }) {
     return (
-        <ul className="hidden lg:flex space-x-4">
+        <ul className="hidden lg:flex space-x-4 ml-auto">
             {links.map((link, index) => (
-                <motion.li key={index} whileHover={{ scale: 1.2 }} transition={{ duration: 0.3 }}>
+                <motion.li key={index} whileHover={{ scale: 1.2 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
                     <Action {...link} className="text-lg hover:text-twilight transition duration-300" />
                 </motion.li>
             ))}
@@ -65,54 +69,42 @@ function SocialIcons({ links }) {
     );
 }
 
-function MobileMenu({ primaryLinks, socialLinks }) {
+function MobileMenu(props) {
+    const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <div className="lg:hidden flex">
-            {/* 🔹 Ensuring the menu button is **always** visible */}
+        <div className="ml-auto lg:hidden">
             <button 
                 aria-label="Open Menu" 
-                className="border border-current h-10 w-10 p-2 rounded-lg focus:outline-none flex items-center justify-center bg-gray-800 text-white"
+                className="border-l border-current h-10 min-h-full p-4 focus:outline-none" 
                 onClick={() => setIsMenuOpen(true)}
             >
                 ☰
             </button>
-
-            <AnimatePresence>
-                {isMenuOpen && (
-                    <motion.div
-                        {...{ className: "fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center" }}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                    >
-                        <div className="absolute top-4 right-4">
-                            <button 
-                                aria-label="Close Menu" 
-                                className="p-3 bg-white text-black rounded-full shadow-lg"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                ✕
-                            </button>
-                        </div>
-                        <ul className="flex flex-col space-y-6 text-white text-2xl">
-                            {primaryLinks.map((link, index) => (
-                                <li key={index}>
-                                    <Link {...link} className="hover:text-cyanGlow">{link.label}</Link>
-                                </li>
-                            ))}
-                        </ul>
-                        <ul className="flex space-x-6 mt-8">
-                            {socialLinks.map((link, index) => (
-                                <motion.li key={index} whileHover={{ scale: 1.2 }} transition={{ duration: 0.3 }}>
-                                    <Action {...link} className="text-lg hover:text-cyanGlow transition duration-300" />
-                                </motion.li>
-                            ))}
-                        </ul>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {isMenuOpen && (
+                <motion.div
+                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                >
+                    <div className="border-b border-current flex items-center justify-between p-4">
+                        <SiteLogoLink {...logoProps} />
+                        <button 
+                            aria-label="Close Menu" 
+                            className="border-l border-current p-4" 
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            ✕
+                        </button>
+                    </div>
+                    <div className="flex flex-col items-center space-y-6 py-12">
+                        <NavLinks links={primaryLinks} />
+                        <SocialIcons links={socialLinks} />
+                    </div>
+                </motion.div>
+            )}
         </div>
     );
 }
