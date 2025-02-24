@@ -35,28 +35,26 @@ export default function Header(props) {
     );
 }
 
-function HeaderVariants(props) {
-    const { variant = 'variant-a', ...rest } = props;
-
-    console.log("🔍 HeaderVariants is rendering with variant:", variant);
-
-    switch (variant) {
-        case 'variant-a':
-            return <HeaderVariantA {...rest} />;
-        case 'variant-b':
-            return <HeaderVariantB {...rest} />;
-        case 'variant-c':
-            return <HeaderVariantC {...rest} />;
+function mapMaxWidthStyles(width) {
+    switch (width) {
+        case 'narrow':
+            return 'max-w-7xl';
+        case 'wide':
+            return 'max-w-screen-2xl';
+        case 'full':
+            return 'max-w-full';
         default:
             return null;
     }
 }
 
+function HeaderVariants(props) {
+    const { variant = 'variant-a', ...rest } = props;
+    return variant === 'variant-a' ? <HeaderVariantA {...rest} /> : variant === 'variant-b' ? <HeaderVariantB {...rest} /> : <HeaderVariantC {...rest} />;
+}
+
 function HeaderVariantA(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
-    
-    console.log("✅ HeaderVariantA is rendering!");
-    
     return (
         <div className="flex items-center relative">
             <SiteLogoLink {...logoProps} />
@@ -103,8 +101,7 @@ function NavLinks({ links }) {
                         >
                             {link.label}
                             <motion.span
-                                style={{ position: 'absolute', left: 0, bottom: 0, width: '100%', height: '0.5rem', backgroundColor: 'cyan' }}
-                                animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
+                                style={{ position: 'absolute', left: 0, bottom: 0, width: '100%', height: '0.5rem', backgroundColor: 'var(--cyanGlow)', transformOrigin: 'left', scaleX: isActive ? 1 : 0 }}
                                 transition={{ duration: 0.3 }}
                             />
                         </Link>
@@ -142,13 +139,12 @@ function MobileMenu(props) {
                 className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-red-500 text-white" 
                 onClick={() => setIsMenuOpen(true)}
             >
-                <span className="sr-only">Open Menu</span>
-                ☰
+                MENU
             </button>
 
             {isMenuOpen && (
                 <motion.div
-                    style={{ position: 'fixed', inset: 0, backgroundColor: 'black', opacity: 0.75, zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+                    style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.75)', zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -171,23 +167,6 @@ function MobileMenu(props) {
                     </div>
                 </motion.div>
             )}
-        </div>
-    );
-}
-
-function SiteLogoLink({ title, isTitleVisible, logo }) {
-    const fixedLogo = logo || {
-        type: 'ImageBlock',
-        url: '/images/AstralSeal.png',
-        altText: 'The Astral Seal',
-        caption: ''
-    };
-    return (
-        <div className="border-r border-current flex items-center">
-            <Link href="/" className="sb-header-logo flex items-center h-full p-4">
-                <ImageBlock {...fixedLogo} className={classNames('max-h-12', { 'mr-2': isTitleVisible })} />
-                {title && isTitleVisible && <span className="text-base tracking-widest uppercase">{title}</span>}
-            </Link>
         </div>
     );
 }
