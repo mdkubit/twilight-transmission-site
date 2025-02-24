@@ -4,8 +4,29 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 
-import { Link, Action, Social } from '../../atoms';
+import { Link, Action } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
+
+// Ensure we define these missing components
+function SiteLogoLink({ title, isTitleVisible, logo }) {
+    console.log("LOGO PROP:", logo);
+
+    const fixedLogo = logo || {
+        type: 'ImageBlock',
+        url: '/images/AstralSeal.png',
+        altText: 'The Astral Seal',
+        caption: ''
+    };
+
+    return (
+        <div className="border-r border-current flex items-center">
+            <Link href="/" className="sb-header-logo flex items-center h-full p-4">
+                <ImageBlock {...fixedLogo} className={classNames('max-h-12', { 'mr-2': isTitleVisible })} />
+                {title && isTitleVisible && <span className="text-base tracking-widest uppercase">{title}</span>}
+            </Link>
+        </div>
+    );
+}
 
 export default function Header(props) {
     const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
@@ -37,7 +58,7 @@ export default function Header(props) {
 
 function HeaderVariants(props) {
     const { variant = 'variant-a', ...rest } = props;
-    
+
     console.log("🔍 HeaderVariants is rendering with variant:", variant);
 
     switch (variant) {
@@ -54,9 +75,9 @@ function HeaderVariants(props) {
 
 function HeaderVariantA(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
-    
+
     console.log("✅ HeaderVariantA is rendering!");
-    
+
     return (
         <div className="flex items-center relative">
             <SiteLogoLink {...logoProps} />
@@ -143,8 +164,9 @@ function MobileMenu(props) {
                 onClick={() => setIsMenuOpen(true)}
             >
                 <span className="sr-only">Open Menu</span>
-                MENU
+                MENU BUTTON HERE
             </button>
+
             {isMenuOpen && (
                 <motion.div
                     className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
