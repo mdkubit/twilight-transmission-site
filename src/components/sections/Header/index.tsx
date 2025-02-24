@@ -7,7 +7,6 @@ import { motion } from 'framer-motion';
 import { Link, Action } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
 
-// Ensure SiteLogoLink is defined properly
 function SiteLogoLink({ title, isTitleVisible, logo }) {
     console.log("LOGO PROP:", logo);
 
@@ -125,10 +124,10 @@ function NavLinks({ links }) {
                             {link.label}
                             <motion.span
                                 {...{
-                                    className: "absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
+                                    animate: isActive ? { scaleX: 1 } : { scaleX: 0 },
+                                    transition: { duration: 0.3 }
                                 }}
-                                animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
-                                transition={{ duration: 0.3 }}
+                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
                             />
                         </Link>
                     </li>
@@ -171,10 +170,10 @@ function MobileMenu(props) {
 
             {isMenuOpen && (
                 <motion.div
-                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
+                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
                 >
                     <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
                         <div className="flex justify-between items-center border-b border-current pb-3">
