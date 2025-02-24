@@ -8,7 +8,7 @@ import { Link, Action, Social } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
 
 export default function Header(props) {
-    const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
+    const { headerVariant = 'variant-a', isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
     const headerWidth = styles.self?.width ?? 'narrow';
 
     return (
@@ -59,13 +59,9 @@ function HeaderVariantA(props) {
     
     return (
         <div className="flex items-center relative">
-
             <SiteLogoLink {...logoProps} />
             <NavLinks links={primaryLinks} />
             <SocialIcons links={socialLinks} />
-            <button className="bg-red-500 text-white p-4 z-50">
-                FORCED BUTTON HERE
-            </button>
             <MobileMenu {...props} />
         </div>
     );
@@ -107,7 +103,7 @@ function NavLinks({ links }) {
                         >
                             {link.label}
                             <motion.span
-                                {...{ className: "absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0" }}
+                                className="absolute left-0 bottom-0 w-full h-0.5 bg-cyanGlow origin-left scale-x-0"
                                 animate={isActive ? { scaleX: 1 } : { scaleX: 0 }}
                                 transition={{ duration: 0.3 }}
                             />
@@ -143,17 +139,15 @@ function MobileMenu(props) {
         <div className="ml-auto lg:hidden">
             <button 
                 aria-label="Open Menu" 
-                className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-red-500 text-white" 
+                className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-blue-500 text-white" 
                 onClick={() => setIsMenuOpen(true)}
             >
-                <span className="sr-only">Open Menu</span>
-                MENU BUTTON HERE
+                ☰
             </button>
-
 
             {isMenuOpen && (
                 <motion.div
-                    {...{ className: "fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center" }}
+                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -181,8 +175,6 @@ function MobileMenu(props) {
 }
 
 function SiteLogoLink({ title, isTitleVisible, logo }) {
-    console.log("LOGO PROP:", logo);
-
     const fixedLogo = logo || {
         type: 'ImageBlock',
         url: '/images/AstralSeal.png',
@@ -201,14 +193,5 @@ function SiteLogoLink({ title, isTitleVisible, logo }) {
 }
 
 function mapMaxWidthStyles(width) {
-    switch (width) {
-        case 'narrow':
-            return 'max-w-7xl';
-        case 'wide':
-            return 'max-w-screen-2xl';
-        case 'full':
-            return 'max-w-full';
-        default:
-            return null;
-    }
+    return width === 'wide' ? 'max-w-screen-2xl' : width === 'full' ? 'max-w-full' : 'max-w-7xl';
 }
