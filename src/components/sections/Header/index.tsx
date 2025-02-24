@@ -23,7 +23,7 @@ export default function Header(props) {
                     Skip to main content
                 </Link>
                 <HeaderVariants
-                    variant={headerVariant}
+                    variant="variant-a"
                     title={title}
                     isTitleVisible={isTitleVisible}
                     logo={logo}
