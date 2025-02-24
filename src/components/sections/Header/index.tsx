@@ -37,6 +37,9 @@ export default function Header(props) {
 
 function HeaderVariants(props) {
     const { variant = 'variant-a', ...rest } = props;
+
+    console.log("🔍 HeaderVariants is rendering with variant:", variant);
+
     switch (variant) {
         case 'variant-a':
             return <HeaderVariantA {...rest} />;
