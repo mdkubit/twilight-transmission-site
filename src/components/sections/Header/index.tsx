@@ -133,12 +133,13 @@ function MobileMenu(props) {
         <div className="ml-auto lg:hidden">
             <button 
                 aria-label="Open Menu" 
-                className="border-l border-current h-10 min-h-full p-4 focus:outline-none" 
+                className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-red-500 text-white" 
                 onClick={() => setIsMenuOpen(true)}
             >
                 <span className="sr-only">Open Menu</span>
-                <motion.span whileHover={{ scale: 1.1 }}>☰</motion.span>
+                MENU BUTTON HERE
             </button>
+
 
             {isMenuOpen && (
                 <motion.div
