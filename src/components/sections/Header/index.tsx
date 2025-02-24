@@ -82,8 +82,7 @@ function MobileMenu({ primaryLinks, socialLinks }) {
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        key="mobile-menu"
-                        className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
+                        {...{ className: "fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center" }}
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
