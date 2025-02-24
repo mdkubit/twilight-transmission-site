@@ -53,6 +53,7 @@ function HeaderVariantA(props) {
     const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
     return (
         <div className="flex items-center relative">
+            console.log("✅ HeaderVariantA is rendering!");
             <SiteLogoLink {...logoProps} />
             <NavLinks links={primaryLinks} />
             <SocialIcons links={socialLinks} />
