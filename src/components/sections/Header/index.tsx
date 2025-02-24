@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 
 import { Link, Action, Social } from '../../atoms';
 import ImageBlock from '../../molecules/ImageBlock';
-import SiteLogoLink from '../../components/SiteLogoLink';
 
 export default function Header(props) {
     const { headerVariant, isSticky, title, isTitleVisible, logo, primaryLinks = [], socialLinks = [], styles = {} } = props;
@@ -38,7 +37,7 @@ export default function Header(props) {
 
 function HeaderVariants(props) {
     const { variant = 'variant-a', ...rest } = props;
-
+    
     console.log("🔍 HeaderVariants is rendering with variant:", variant);
 
     switch (variant) {
@@ -63,9 +62,6 @@ function HeaderVariantA(props) {
             <SiteLogoLink {...logoProps} />
             <NavLinks links={primaryLinks} />
             <SocialIcons links={socialLinks} />
-            <button className="bg-red-500 text-white p-4 z-50">
-                FORCED BUTTON HERE
-            </button>
             <MobileMenu {...props} />
         </div>
     );
@@ -132,6 +128,49 @@ function SocialIcons({ links }) {
                 </motion.li>
             ))}
         </ul>
+    );
+}
+
+function MobileMenu(props) {
+    const { primaryLinks = [], socialLinks = [], ...logoProps } = props;
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    return (
+        <div className="ml-auto lg:hidden">
+            <button 
+                aria-label="Open Menu" 
+                className="border-l border-current h-10 min-h-full p-4 focus:outline-none bg-red-500 text-white" 
+                onClick={() => setIsMenuOpen(true)}
+            >
+                <span className="sr-only">Open Menu</span>
+                MENU
+            </button>
+            {isMenuOpen && (
+                <motion.div
+                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex flex-col items-center justify-center"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                >
+                    <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+                        <div className="flex justify-between items-center border-b border-current pb-3">
+                            <SiteLogoLink {...logoProps} />
+                            <button 
+                                aria-label="Close Menu" 
+                                className="border-l border-current p-4" 
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <div className="flex flex-col items-center space-y-6 py-6">
+                            <NavLinks links={primaryLinks} />
+                            <SocialIcons links={socialLinks} />
+                        </div>
+                    </div>
+                </motion.div>
+            )}
+        </div>
     );
 }
 
